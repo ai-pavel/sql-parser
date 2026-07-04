@@ -92,6 +92,8 @@ let check_statement schema stmt =
       | Some tr -> table_names_from_ref tr
       | None -> []
     in
+    (* Validate that all referenced tables exist in the schema *)
+    List.iter (fun (tname, _) -> ignore (find_table schema tname)) tables;
     (* Check column references in select items *)
     List.iter (fun item ->
       match item with
