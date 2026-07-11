@@ -1,4 +1,11 @@
 (executable
  (name main)
  (public_name sql_parser)
+ (modules main)
  (libraries sql_parser))
+
+(executable
+ (name server)
+ (public_name sql_parser_server)
+ (modules server)
+ (libraries sql_parser unix))
