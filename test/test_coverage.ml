@@ -426,7 +426,11 @@ let test_storage_load_from_disk () =
   let _ = exec "INSERT INTO t VALUES (2, 'Bob')" in
   (* Create a fresh db — tables list is empty, should load from disk *)
   let db2 = Storage.create_database dir in
-  let r = exec "SELECT * FROM t" in
+  let r =
+    let stmt = Parser.parse "SELECT * FROM t" in
+    let plan = Planner.plan_statement stmt in
+    Executor.execute db2 plan
+  in
   Alcotest.(check int) "loaded from disk" 2 (List.length r.rows)
 
 let test_storage_create_if_exists () =
