@@ -201,7 +201,7 @@ let test_parse_create_table_not_null () =
   let stmt = Parser.parse "CREATE TABLE t (id INT NOT NULL, name STRING NOT NULL)" in
   (match stmt with
    | Ast.CreateTable { columns; _ } ->
-     List.iter (fun cd -> Alcotest.(check bool) "not null" false cd.nullable) columns
+      List.iter (fun cd -> Alcotest.(check bool) "not null" false cd.Ast.nullable) columns
    | _ -> Alcotest.fail "expected CREATE TABLE")
 
 let test_parse_error () =
