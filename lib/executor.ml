@@ -53,13 +53,15 @@ and eval_binop op lv rv =
   | Gte -> VBool (compare_values lv rv >= 0)
   | And ->
     (match lv, rv with
-     | VBool a, VBool b -> VBool (a && b)
+     | VBool false, _ | _, VBool false -> VBool false
      | VNull, _ | _, VNull -> VNull
+     | VBool a, VBool b -> VBool (a && b)
      | _ -> raise (Exec_error "AND requires booleans"))
   | Or ->
     (match lv, rv with
-     | VBool a, VBool b -> VBool (a || b)
+     | VBool true, _ | _, VBool true -> VBool true
      | VNull, _ | _, VNull -> VNull
+     | VBool a, VBool b -> VBool (a || b)
      | _ -> raise (Exec_error "OR requires booleans"))
   | Add -> numeric_op ( + ) ( +. ) lv rv
   | Sub -> numeric_op ( - ) ( -. ) lv rv
